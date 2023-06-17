@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BG
+    uniqueID: 981572791
+    locked: 0
+  - name: Stage
+    uniqueID: 753922657
+    locked: 0
