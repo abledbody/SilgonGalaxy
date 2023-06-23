@@ -297,6 +297,7 @@ MonoBehaviour:
     turnAcceleration: 2000
     topTurnSpeed: 420
     topSpeedSteering: 0.48
+    drift: 0.02
 --- !u!50 &351501499
 Rigidbody2D:
   serializedVersion: 4
@@ -311,7 +312,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -567,7 +568,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1838745096}
   - component: {fileID: 1838745095}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Test BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -612,8 +613,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 981572791
-  m_SortingLayer: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: db3ca13bef8d6624682d982a6da9a986, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -667,7 +668,6 @@ GameObject:
   - component: {fileID: 543450651956712300}
   - component: {fileID: 3469287837887274185}
   - component: {fileID: 1711813855233599491}
-  - component: {fileID: 3469287837887274186}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -725,15 +725,3 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132147684854230}
   m_Mesh: {fileID: 586678771281070490, guid: 464b9e97ab455d249b131bb145e644ec, type: 3}
---- !u!210 &3469287837887274186
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132147684854230}
-  m_Enabled: 1
-  m_SortingLayerID: 753922657
-  m_SortingLayer: 2
-  m_SortingOrder: 0
-  m_SortAtRoot: 0

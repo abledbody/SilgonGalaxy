@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace SilgonGalaxy {
 	using Extensions;
+	using Math = Extensions.MathExtensions;
 
 	[RequireComponent(typeof(Rigidbody2D))]
 	public sealed class Ship : MonoBehaviour {
@@ -49,8 +50,6 @@ namespace SilgonGalaxy {
 		}
 
 		public void EvaluateSpeed(float dt) {
-			speed = rb.velocity.Dot(transform.up);
-
 			// If the signs are different, we're trying to slow down.
 			var braking = speed * vInput < 0;
 			var forward = vInput > 0;
@@ -85,7 +84,13 @@ namespace SilgonGalaxy {
 
 			speed = speed.MoveTowards(targetSpeed, acceleration * vInput.Abs() * dt);
 
-			rb.velocity = transform.up * speed;
+			var velocityCorrection = dt/config.drift - dt;
+			Debug.Log($"dt: {dt}, drift: {config.drift}, velocityCorrection: {velocityCorrection}");
+
+			rb.velocity = rb.velocity.MoveTowards(
+				transform.up * speed,
+				velocityCorrection
+			);
 		}
 
 		[Serializable]
@@ -104,8 +109,10 @@ namespace SilgonGalaxy {
 			public float turnAcceleration;
 			[Min(0)]
 			public float topTurnSpeed;
-			[Range(0,1)]
+			[Range(0, 1)]
 			public float topSpeedSteering;
+			[Range(0, 1)]
+			public float drift;
 		}
 	}
 }
