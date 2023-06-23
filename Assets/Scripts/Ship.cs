@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace SilgonGalaxy {
 	using Extensions;
+	using Weapons;
 	using Math = Extensions.MathExtensions;
 
 	[RequireComponent(typeof(Rigidbody2D))]
@@ -11,6 +12,8 @@ namespace SilgonGalaxy {
 		private Rigidbody2D rb;
 
 		public Config config;
+
+		public ChargeBlaster chargeBlaster = new();
 
 		private float speed;
 		private bool brakeLock;
@@ -26,12 +29,20 @@ namespace SilgonGalaxy {
 		public void FixedUpdate() {
 			EvaluateSpeed(Time.fixedDeltaTime);
 			EvaluateTurn(Time.fixedDeltaTime);
+			chargeBlaster.Update(Time.fixedDeltaTime);
 		}
 
 		public void ThrustInput(InputAction.CallbackContext context) =>
 			vInput = context.ReadValue<float>();
 		public void TurnInput(InputAction.CallbackContext context) =>
 			hInput = context.ReadValue<float>();
+		
+		public void FireInput(InputAction.CallbackContext context) {
+			if (context.started)
+				chargeBlaster.StartFire();
+			if (context.canceled)
+				chargeBlaster.ReleaseFire();
+		}
 
 		public void EvaluateTurn(float dt) {
 			// We're only considering the forward speed, as it's pretty much guaranteed to be higher than the reverse speed,
@@ -85,7 +96,6 @@ namespace SilgonGalaxy {
 			speed = speed.MoveTowards(targetSpeed, acceleration * vInput.Abs() * dt);
 
 			var velocityCorrection = dt/config.drift - dt;
-			Debug.Log($"dt: {dt}, drift: {config.drift}, velocityCorrection: {velocityCorrection}");
 
 			rb.velocity = rb.velocity.MoveTowards(
 				transform.up * speed,

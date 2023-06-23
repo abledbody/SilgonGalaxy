@@ -298,6 +298,9 @@ MonoBehaviour:
     topTurnSpeed: 420
     topSpeedSteering: 0.48
     drift: 0.02
+  chargeBlaster:
+    config:
+      chargeTime: 0.5
 --- !u!50 &351501499
 Rigidbody2D:
   serializedVersion: 4
@@ -382,6 +385,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 335d6759-d31c-444d-9e7e-e2059ca69cf9
     m_ActionName: Ingame/Turn[/Keyboard/d,/Keyboard/a]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 351501498}
+        m_TargetAssemblyTypeName: SilgonGalaxy.Ship, Assembly-CSharp
+        m_MethodName: FireInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1c0990d3-86c3-4211-90b4-ae4eccfdffe9
+    m_ActionName: Ingame/Fire[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Ingame
