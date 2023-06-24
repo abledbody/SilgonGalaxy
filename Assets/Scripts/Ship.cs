@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 namespace SilgonGalaxy {
 	using Extensions;
 	using Weapons;
-	using Math = Extensions.MathExtensions;
 
 	[RequireComponent(typeof(Rigidbody2D))]
 	public sealed class Ship : MonoBehaviour {
@@ -29,7 +28,7 @@ namespace SilgonGalaxy {
 		public void FixedUpdate() {
 			EvaluateSpeed(Time.fixedDeltaTime);
 			EvaluateTurn(Time.fixedDeltaTime);
-			chargeBlaster.Update(Time.fixedDeltaTime);
+			chargeBlaster.Update(Time.fixedDeltaTime, rb);
 		}
 
 		public void ThrustInput(InputAction.CallbackContext context) =>
@@ -39,9 +38,9 @@ namespace SilgonGalaxy {
 		
 		public void FireInput(InputAction.CallbackContext context) {
 			if (context.started)
-				chargeBlaster.StartFire();
+				chargeBlaster.StartFire(rb);
 			if (context.canceled)
-				chargeBlaster.ReleaseFire();
+				chargeBlaster.ReleaseFire(rb);
 		}
 
 		public void EvaluateTurn(float dt) {
@@ -51,9 +50,11 @@ namespace SilgonGalaxy {
 
 			var targetSpeed = hInput * config.topTurnSpeed * responsiveness;
 
-			if (rb.angularVelocity * targetSpeed < 0 || targetSpeed == 0)
+			// We instantly snap to 0 angular velocity if we're not actively trying to turn into the current direction of rotation.
+			if (targetSpeed == 0 || targetSpeed.DifferentSign(rb.angularVelocity))
 				rb.angularVelocity = 0;
 			else
+				// It takes time to get to a higher angular velocity.
 				rb.angularVelocity = rb.angularVelocity.MoveTowards(
 					targetSpeed,
 					config.turnAcceleration * responsiveness * dt
@@ -61,8 +62,7 @@ namespace SilgonGalaxy {
 		}
 
 		public void EvaluateSpeed(float dt) {
-			// If the signs are different, we're trying to slow down.
-			var braking = speed * vInput < 0;
+			var braking = vInput.DifferentSign(speed);
 			var forward = vInput > 0;
 			var backwards = vInput < 0;
 
@@ -78,15 +78,15 @@ namespace SilgonGalaxy {
 			(targetSpeed, acceleration) = true switch {
 				// Braking is always trying to reach 0 speed.
 				_ when braking => (0, config.braking),
-				// Asymmetrical top-speeds and accelerations between forward and reverse.
+				// Top speed and acceleration are asymmetrical between forward and reverse.
 				_ when forward && !brakeLock => (
 					config.topForwardSpeed,
-					// We add a small epsilon to avoid division by 0.
+					// We add an epsilon to avoid division by 0.
 					config.topForwardSpeed / (config.forwardAccelerationTime + float.Epsilon)
 				),
 				_ when backwards && !brakeLock => (
 					-config.topReverseSpeed,
-					// We add a small epsilon to avoid division by 0.
+					// We add an epsilon to avoid division by 0.
 					config.topReverseSpeed / (config.reverseAccelerationTime + float.Epsilon)
 				),
 				// No inputs means just coast.
@@ -95,11 +95,10 @@ namespace SilgonGalaxy {
 
 			speed = speed.MoveTowards(targetSpeed, acceleration * vInput.Abs() * dt);
 
-			var velocityCorrection = dt/config.drift - dt;
-
+			// Doing this allows the ship to drift a bit when turning.
 			rb.velocity = rb.velocity.MoveTowards(
 				transform.up * speed,
-				velocityCorrection
+				dt / config.drift - dt // Equivalent to:  (1 / drift - 1) * dt
 			);
 		}
 

@@ -26,11 +26,13 @@ namespace SilgonGalaxy.Extensions {
 		public static float Clamp(this float val, float min, float max) => Math.clamp(val, min, max);
 		public static int Clamp(this int val, int min, int max) => Math.clamp(val, min, max);
 		public static int ClampToInt(this float val, int min, int max) => val.Clamp(min, max).RoundToInt();
+		public static float Quantize(this float val, float interval) => (val * interval).Round() / interval;
 
 		public static int Mod(this int a, int b) => (a % b + b) % b;
 		public static float Mod(this float a, float b) => (a % b + b) % b;
 
 		public static float Comp(this float lhs, float rhs) => lhs * rhs.Sign();
+		public static bool DifferentSign(this float lhs, float rhs) => lhs * rhs < 0;
 
 		public static int ToInt(this bool val) => val ? 1 : 0;
 		public static bool ToBool(this int val) => val != 0;
@@ -76,5 +78,7 @@ namespace SilgonGalaxy.Extensions {
 		public static float Atan2(this Vector2 vector) => Math.atan2(vector.y, vector.x);
 		public static float Atan2(this Vector3 vector) => Math.atan2(vector.y, vector.x);
 		public static Vector2 Direction2(this float angle) => new(Math.cos(angle), Math.sin(angle));
+		public static Vector3 Round(this Vector3 vector) => new(vector.x.Round(), vector.y.Round(), vector.z.Round());
+		public static Vector3 Quantize(this Vector3 vector, float interval) => (vector * interval).Round() / interval;
 	}
 }

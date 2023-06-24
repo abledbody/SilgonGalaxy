@@ -300,7 +300,11 @@ MonoBehaviour:
     drift: 0.02
   chargeBlaster:
     config:
+      shotInterval: 0.2
       chargeTime: 0.5
+      offset: {x: 0, y: 0}
+      smallProjectile: {fileID: 5958015994972738751, guid: c339ce84e29b96e43a748c27a56e55d6, type: 3}
+      bigProjectile: {fileID: 5958015994972738751, guid: 24d49ad04fc02d8458208cc50de3fb1c, type: 3}
 --- !u!50 &351501499
 Rigidbody2D:
   serializedVersion: 4
@@ -574,8 +578,9 @@ MonoBehaviour:
   config:
     easing: 0.2
     lookAhead: 1.2
-    velocityTracking: 0.4
+    velocityTracking: 0.3
     distance: 40
+  gameConfig: {fileID: 11400000, guid: f9239a715802f524c83a748a7819fbfe, type: 2}
   target: {fileID: 351501497}
 --- !u!1 &1838745094
 GameObject:
@@ -632,8 +637,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 981572791
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: db3ca13bef8d6624682d982a6da9a986, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -687,6 +692,7 @@ GameObject:
   - component: {fileID: 543450651956712300}
   - component: {fileID: 3469287837887274185}
   - component: {fileID: 1711813855233599491}
+  - component: {fileID: 3469287837887274186}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -744,3 +750,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132147684854230}
   m_Mesh: {fileID: 586678771281070490, guid: 464b9e97ab455d249b131bb145e644ec, type: 3}
+--- !u!114 &3469287837887274186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132147684854230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a4523b379b6b564ab61c139ebe4bfcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameConfig: {fileID: 11400000, guid: f9239a715802f524c83a748a7819fbfe, type: 2}
+  offset: {x: 0, y: 0, z: 0}

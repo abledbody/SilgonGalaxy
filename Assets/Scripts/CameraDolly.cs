@@ -2,42 +2,62 @@ using System;
 using UnityEngine;
 
 namespace SilgonGalaxy {
+	using Extensions;
+
 	public sealed class CameraDolly : MonoBehaviour {
 		public Config config;
+		public GameConfig gameConfig;
+		
 		[SerializeField] private Transform target;
 		private Rigidbody2D targetRb;
+		private Vector3 targetOffset;
 		private Vector3 offset;
 		private Vector3 truePosition;
+		public Vector3 TruePosition => truePosition;
 
 
 		public void Awake() {
 			SetTarget(target);
+			GameConfig.CheckAssigned(ref gameConfig, this);
+			truePosition = transform.position;
+			LookAhead();
+			offset = targetOffset;
 		}
 
-		public void Update() {
+		public void LateUpdate() {
 			LookAhead();
 			FollowTarget(Time.deltaTime);
+			PositionSnap();
 		}
+
+		void PositionSnap() => transform.position = truePosition.Quantize(gameConfig.pixelsPerUnit);
 
 		void FollowTarget(float dt) {
 			if (target == null) return;
+			
+			var targetPosition = target.position + targetOffset;
 
-			var targetWithOffset = target.position + offset;
-
-			if (config.easing > 0)
-				transform.position = SmoothApproach(transform.position, targetWithOffset, config.easing, dt);
+			Debug.DrawLine(targetPosition + Vector3.down * 0.5f, targetPosition + Vector3.up * 0.5f, Color.gray);
+			Debug.DrawLine(targetPosition + Vector3.left * 0.5f, targetPosition + Vector3.right * 0.5f, Color.gray);
+			
+			if (config.easing > 0) {
+				offset = SmoothApproach(offset, targetOffset, config.easing, dt);
+				truePosition = target.position + offset.Quantize(gameConfig.pixelsPerUnit);
+			}
 			else
-				transform.position = targetWithOffset;
+				truePosition = targetPosition;
 		}
 
 		void LookAhead() {
-			offset = target.up * config.lookAhead + Vector3.back * config.distance;
-
-			if (targetRb == null) return;
-
-			offset += (Vector3)(targetRb.velocity * config.velocityTracking);
+			if (targetRb != null) {
+				targetOffset = target.up * config.lookAhead + Vector3.back * config.distance;
+				targetOffset += (Vector3)(targetRb.velocity * config.velocityTracking);
+				targetOffset = targetOffset.Quantize(gameConfig.pixelsPerUnit);
+			}
+			else
+				targetOffset = Vector3.zero;
 		}
-		
+
 		public void SetTarget(Transform target) {
 			this.target = target;
 			targetRb = target.GetComponent<Rigidbody2D>();
