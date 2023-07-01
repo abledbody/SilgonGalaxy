@@ -289,16 +289,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8642a8a73996893459db608fff3338b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  config:
-    topForwardSpeed: 16
-    topReverseSpeed: 8
-    forwardAccelerationTime: 0.6
-    reverseAccelerationTime: 0.4
-    braking: 45
-    turnAcceleration: 2000
-    topTurnSpeed: 420
-    topSpeedSteering: 0.48
-    drift: 0.02
+  thrusters:
+    config:
+      topForwardSpeed: 16
+      topReverseSpeed: 8
+      forwardAccelerationTime: 0.6
+      reverseAccelerationTime: 0.4
+      brakingTime: 0.35
+      drift: 0.02
+      useBrakeLock: 1
+  rotation:
+    config:
+      turnAccelerationTime: 0.21
+      topTurnSpeed: 420
+      topSpeedSteering: 0.48
   chargeBlaster:
     config:
       shotInterval: 0.2
