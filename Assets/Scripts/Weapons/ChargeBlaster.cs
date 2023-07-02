@@ -9,20 +9,20 @@ namespace SilgonGalaxy.Weapons {
 		public References references;
 
 		private Delay chargeDelay;
-		private bool firing;
-		private bool bufferedShot;
+		private bool isFiring;
+		private bool isShotBuffered;
 		private Delay shotDelay;
 
 
 		public void Update(float dt, Rigidbody2D rb) {
 			chargeDelay.Update(dt);
 			
-			if (shotDelay.Update(dt) && firing) {
-				if (bufferedShot) {
+			if (shotDelay.Update(dt) && isFiring) {
+				if (isShotBuffered) {
 					references.audioSource.PlayOneShot(config.smallShotSound);
 					SpawnProjectile(rb, config.smallProjectile);
 					chargeDelay.Start(config.chargeTime);
-					bufferedShot = false;
+					isShotBuffered = false;
 				}
 				else {
 					references.audioSource.PlayOneShot(config.initialChargeSound);
@@ -34,10 +34,10 @@ namespace SilgonGalaxy.Weapons {
 		}
 
 		public void StartFire(Rigidbody2D rb) {
-			firing = true;
+			isFiring = true;
 
 			if (!shotDelay.Complete) {
-				bufferedShot = true;
+				isShotBuffered = true;
 				return;
 			}
 			chargeDelay.Start(config.chargeTime);
@@ -47,8 +47,8 @@ namespace SilgonGalaxy.Weapons {
 		}
 		
 		public void ReleaseFire(Rigidbody2D rb) {
-			if (!firing) return;
-			firing = false;
+			if (!isFiring) return;
+			isFiring = false;
 			
 			if (!shotDelay.Complete) return;
 			
