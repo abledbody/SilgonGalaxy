@@ -575,6 +575,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Ship
       objectReference: {fileID: 0}
+    - target: {fileID: 77909243348610207, guid: 33dd3973df51c2d48aa236f8468868da, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1099114716443689350, guid: 33dd3973df51c2d48aa236f8468868da, type: 3}
       propertyPath: m_RootOrder
       value: 2

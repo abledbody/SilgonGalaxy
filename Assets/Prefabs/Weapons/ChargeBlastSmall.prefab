@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6438680879530466960, guid: 74c34dbc19366dc4a98f9f36c13d6966, type: 3}
       propertyPath: m_Name
-      value: Projectile
+      value: ChargeBlastSmall
       objectReference: {fileID: 0}
     - target: {fileID: 8064962823237063299, guid: 74c34dbc19366dc4a98f9f36c13d6966, type: 3}
       propertyPath: m_RootOrder

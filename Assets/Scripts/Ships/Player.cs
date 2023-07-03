@@ -22,10 +22,13 @@ namespace SilgonGalaxy.Ships {
 			rb = GetComponent<Rigidbody2D>();
 		}
 
+		public void Update() {
+			chargeBlaster.Update(Time.deltaTime, rb);
+		}
+
 		public void FixedUpdate() {
 			thrusters.EvaluateSpeed(rb, vInput, Time.fixedDeltaTime);
 			rotation.EvaluateTurn(rb, thrusters.TopSpeedFraction, hInput, Time.fixedDeltaTime);
-			chargeBlaster.Update(Time.fixedDeltaTime, rb);
 		}
 
 		public void ThrustInput(InputAction.CallbackContext context) =>

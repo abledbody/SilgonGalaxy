@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config:
-    speed: 20
+    speed: 30
     lifetime: 5
     hitMask:
       serializedVersion: 2

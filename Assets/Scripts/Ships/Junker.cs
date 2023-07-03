@@ -11,6 +11,7 @@ namespace SilgonGalaxy.Ships {
 
 		[SerializeField] internal Thrusters thrusters = new();
 		[SerializeField] internal Rotation rotation = new();
+		[SerializeField] internal PlasmaCutter plasmaCutter = new();
 
 		[NonSerialized]public float hInput;
 		[NonSerialized]public float vInput;

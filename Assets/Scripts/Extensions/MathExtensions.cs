@@ -45,6 +45,8 @@ namespace SilgonGalaxy.Extensions {
 
 		public static float Deg(this float rad) => Math.degrees(rad);
 		public static float Rad(this float deg) => Math.radians(deg);
+		public static float Sin(this float rad) => Math.sin(rad);
+		public static float Cos(this float rad) => Math.cos(rad);
 
 		/// <summary>Returns the value with the lowest magnitude.</summary>
 		/// <param name="values">Each value to be compared</param>
