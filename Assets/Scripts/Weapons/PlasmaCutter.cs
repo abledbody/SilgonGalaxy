@@ -27,10 +27,18 @@ namespace SilgonGalaxy.Weapons {
 			
 			heat = Mathf.MoveTowards(heat, heatTarget, dt / heatTime);
 
+			var wasOverheated = isOverheated;
+
 			isOverheated =
 				isOverheated
 				&& !(heat <= 0)
 				|| heat >= 1;
+			
+			if (isOverheated && !wasOverheated) {
+				references.audioSource.loop = false;
+				references.audioSource.Stop();
+				references.audioSource.PlayOneShot(config.overheatSound);
+			}
 			
 			var normalizedBeamWidth =
 				(flashClock.NormalizedTime * MathExtensions.TAU).Sin() * 0.5f + 0.5f;
@@ -60,10 +68,21 @@ namespace SilgonGalaxy.Weapons {
 
 		public void StartFire() {
 			fireInput = true;
+			if (!isOverheated) {
+				references.audioSource.PlayOneShot(config.startupSound);
+				references.audioSource.clip = config.loopSound;
+				references.audioSource.loop = true;
+				references.audioSource.PlayScheduled(config.startupSound.length + AudioSettings.dspTime);
+			}
 		}
 		
 		public void ReleaseFire() {
 			fireInput = false;
+			if (isFiring) {
+				references.audioSource.loop = false;
+				references.audioSource.Stop();
+				references.audioSource.PlayOneShot(config.shutdownSound);
+			}
 		}
 
 		[Serializable]
@@ -74,6 +93,11 @@ namespace SilgonGalaxy.Weapons {
 			public float maxCoolBeamWidth;
 			public float minHotBeamWidth;
 			public float maxHotBeamWidth;
+
+			public AudioClip startupSound;
+			public AudioClip loopSound;
+			public AudioClip shutdownSound;
+			public AudioClip overheatSound;
 		}
 
 		[Serializable]

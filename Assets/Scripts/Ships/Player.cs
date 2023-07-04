@@ -13,6 +13,7 @@ namespace SilgonGalaxy.Ships {
 		[SerializeField] internal Rotation rotation = new();
 
 		public ChargeBlaster chargeBlaster = new();
+		public PlasmaCutter plasmaCutter = new();
 		
 		[NonSerialized]public float hInput;
 		[NonSerialized]public float vInput;
@@ -24,6 +25,7 @@ namespace SilgonGalaxy.Ships {
 
 		public void Update() {
 			chargeBlaster.Update(Time.deltaTime, rb);
+			plasmaCutter.Update(Time.deltaTime);
 		}
 
 		public void FixedUpdate() {
@@ -38,9 +40,9 @@ namespace SilgonGalaxy.Ships {
 		
 		public void FireInput(InputAction.CallbackContext context) {
 			if (context.started)
-				chargeBlaster.StartFire(rb);
+				plasmaCutter.StartFire();
 			if (context.canceled)
-				chargeBlaster.ReleaseFire(rb);
+				plasmaCutter.ReleaseFire();
 		}
 	}
 }

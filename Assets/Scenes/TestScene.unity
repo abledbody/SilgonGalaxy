@@ -558,6 +558,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6661119661813047456, guid: 1f48099f8ecd26144b4d7df2174e86e7, type: 3}
+      propertyPath: plasmaCutter.config.loopSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 127dfe882b460734094c8531c0c276b6, type: 3}
+    - target: {fileID: 6661119661813047456, guid: 1f48099f8ecd26144b4d7df2174e86e7, type: 3}
+      propertyPath: plasmaCutter.config.startupSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 0d37dcd961cae0948a8149ea9cfb2bcc, type: 3}
+    - target: {fileID: 6661119661813047456, guid: 1f48099f8ecd26144b4d7df2174e86e7, type: 3}
+      propertyPath: plasmaCutter.flashClock.interval
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 6661119661813047456, guid: 1f48099f8ecd26144b4d7df2174e86e7, type: 3}
+      propertyPath: plasmaCutter.config.overheatSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 8c67937243eed544e8e6f0e2b165fa68, type: 3}
+    - target: {fileID: 6661119661813047456, guid: 1f48099f8ecd26144b4d7df2174e86e7, type: 3}
+      propertyPath: plasmaCutter.config.shutdownSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 0d37dcd961cae0948a8149ea9cfb2bcc, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
