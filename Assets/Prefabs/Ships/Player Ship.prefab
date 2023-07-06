@@ -113,8 +113,8 @@ MonoBehaviour:
       maxHotBeamWidth: 0.2
       startupSound: {fileID: 8300000, guid: 0d37dcd961cae0948a8149ea9cfb2bcc, type: 3}
       loopSound: {fileID: 8300000, guid: 127dfe882b460734094c8531c0c276b6, type: 3}
-      shutdownSound: {fileID: 0}
-      overheatSound: {fileID: 0}
+      shutdownSound: {fileID: 8300000, guid: 2367d806f72e49e4a891e99032543d2b, type: 3}
+      overheatSound: {fileID: 8300000, guid: e9bd83a4129acac4d9adf908b482e2a4, type: 3}
     references:
       beam: {fileID: 6099525770872481627}
       audioSource: {fileID: 5421499097580409088}
