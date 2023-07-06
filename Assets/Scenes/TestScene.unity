@@ -643,6 +643,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4849207051150438694, guid: 33dd3973df51c2d48aa236f8468868da, type: 3}
+      propertyPath: plasmaCutter.config.startFailSound
+      value: 
+      objectReference: {fileID: 8300000, guid: fc228674c88966043875b047e91f03d8, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
