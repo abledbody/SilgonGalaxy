@@ -18,15 +18,11 @@ namespace SilgonGalaxy.Weapons {
 		private Delay shotDelay;
 
 
-		public static ChargeBlaster Attach(Transform parent, Vector3 localPosition, float angle, Config config, References refs) {
-			if (Bootstrappers.WeaponCollection.TryFetch(PREFAB_NAME, out var weapon)) {
-				var instance = Instantiate(weapon, localPosition, Quaternion.Euler(0, 0, angle), parent).GetComponent<ChargeBlaster>();
-				(instance.config, instance.refs) = (config, refs);
-				return instance;
-			}
-			else
-				throw new System.Exception($"Weapon {PREFAB_NAME} not found");
-		}
+		public static ChargeBlaster Attach(Transform parent, Vector3 localPosition, float angle, Config config, References refs) =>
+			WeaponUtils.Attach<ChargeBlaster>(PREFAB_NAME, parent, localPosition, angle, instance => {
+				instance.config = config;
+				instance.refs = refs;
+			});
 
 		public void Awake() {
 			audioSource = GetComponent<AudioSource>();

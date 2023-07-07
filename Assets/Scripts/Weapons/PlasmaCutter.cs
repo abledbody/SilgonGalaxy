@@ -13,7 +13,7 @@ namespace SilgonGalaxy.Weapons {
 		private AudioSource audioSource;
 
 		public Config config;
-		
+
 		public Clock flashClock;
 
 		private float heat;
@@ -22,15 +22,10 @@ namespace SilgonGalaxy.Weapons {
 		private bool CanFire => !isOverheated;
 
 
-		public static PlasmaCutter Attach(Transform parent, Vector3 localPosition, float angle, Config config) {
-			if (Bootstrappers.WeaponCollection.TryFetch(PREFAB_NAME, out var weapon)) {
-				var instance = Instantiate(weapon, localPosition, Quaternion.Euler(0, 0, angle), parent).GetComponent<PlasmaCutter>();
+		public static PlasmaCutter Attach(Transform parent, Vector3 localPosition, float angle, Config config) =>
+			WeaponUtils.Attach<PlasmaCutter>(PREFAB_NAME, parent, localPosition, angle, instance => {
 				instance.config = config;
-				return instance;
-			}
-			else
-				throw new Exception($"Weapon {PREFAB_NAME} not found");
-		}
+			});
 
 		public void Awake() {
 			beam = GetComponent<SpriteRenderer>();

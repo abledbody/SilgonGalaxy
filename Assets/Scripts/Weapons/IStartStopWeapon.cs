@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace SilgonGalaxy.Weapons {
 	public interface IStartStopWeapon {
 		public void StartFire();
