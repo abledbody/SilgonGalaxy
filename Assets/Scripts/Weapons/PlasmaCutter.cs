@@ -5,10 +5,15 @@ namespace SilgonGalaxy.Weapons {
 	using Utils;
 	using Extensions;
 
-	[Serializable]
-	public sealed class PlasmaCutter {
+	[RequireComponent(typeof(SpriteRenderer), typeof(AudioSource))]
+	public sealed class PlasmaCutter : MonoBehaviour, IStartStopWeapon {
+		private const string PREFAB_NAME = "Plasma Cutter";
+		
+		private SpriteRenderer beam;
+		private AudioSource audioSource;
+
 		public Config config;
-		public References references;
+		
 		public Clock flashClock;
 
 		private float heat;
@@ -17,15 +22,30 @@ namespace SilgonGalaxy.Weapons {
 		private bool CanFire => !isOverheated;
 
 
-		public void Update(float dt) {
+		public static PlasmaCutter Attach(Transform parent, Vector3 localPosition, float angle, Config config) {
+			if (Bootstrappers.WeaponCollection.TryFetch(PREFAB_NAME, out var weapon)) {
+				var instance = Instantiate(weapon, localPosition, Quaternion.Euler(0, 0, angle), parent).GetComponent<PlasmaCutter>();
+				instance.config = config;
+				return instance;
+			}
+			else
+				throw new Exception($"Weapon {PREFAB_NAME} not found");
+		}
+
+		public void Awake() {
+			beam = GetComponent<SpriteRenderer>();
+			audioSource = GetComponent<AudioSource>();
+		}
+
+		public void Update() {
 			isFiring = isFiring && CanFire;
-			references.beam.enabled = isFiring;
+			beam.enabled = isFiring;
 			
 			var (heatTarget, heatTime) = isFiring
 				? (1, config.heatBuildupTime)
 				: (0, config.heatShedTime);
 			
-			heat = Mathf.MoveTowards(heat, heatTarget, dt / heatTime);
+			heat = Mathf.MoveTowards(heat, heatTarget, Time.deltaTime / heatTime);
 
 			if (heat >= 1) Overheat();
 			isOverheated = isOverheated && !(heat <= 0);
@@ -48,8 +68,8 @@ namespace SilgonGalaxy.Weapons {
 					heat
 				);
 
-			flashClock.Update(dt);
-			references.beam.transform.localScale = new Vector3(
+			flashClock.Update(Time.deltaTime);
+			beam.transform.localScale = new Vector3(
 				beamWidth,
 				1,
 				1
@@ -59,28 +79,28 @@ namespace SilgonGalaxy.Weapons {
 		public void StartFire() {
 			if (CanFire) {
 				isFiring = true;
-				references.audioSource.PlayOneShot(config.startupSound);
-				references.audioSource.clip = config.loopSound;
-				references.audioSource.loop = true;
-				references.audioSource.PlayScheduled(config.startupSound.length + AudioSettings.dspTime);
+				audioSource.PlayOneShot(config.startupSound);
+				audioSource.clip = config.loopSound;
+				audioSource.loop = true;
+				audioSource.PlayScheduled(config.startupSound.length + AudioSettings.dspTime);
 			}
 			else
-				references.audioSource.PlayOneShot(config.startFailSound);
+				audioSource.PlayOneShot(config.startFailSound);
 		}
 		
 		public void ReleaseFire() {
 			if (!isFiring) return;
-			references.audioSource.loop = false;
-			references.audioSource.Stop();
-			references.audioSource.PlayOneShot(config.shutdownSound);
+			audioSource.loop = false;
+			audioSource.Stop();
+			audioSource.PlayOneShot(config.shutdownSound);
 			isFiring = false;
 		}
 
 		private void Overheat() {
 			isOverheated = true;
-			references.audioSource.loop = false;
-			references.audioSource.Stop();
-			references.audioSource.PlayOneShot(config.overheatSound);
+			audioSource.loop = false;
+			audioSource.Stop();
+			audioSource.PlayOneShot(config.overheatSound);
 		}
 
 		[Serializable]
@@ -97,12 +117,6 @@ namespace SilgonGalaxy.Weapons {
 			public AudioClip shutdownSound;
 			public AudioClip overheatSound;
 			public AudioClip startFailSound;
-		}
-
-		[Serializable]
-		public struct References {
-			public SpriteRenderer beam;
-			public AudioSource audioSource;
 		}
 	}
 }

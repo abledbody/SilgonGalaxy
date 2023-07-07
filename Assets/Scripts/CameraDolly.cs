@@ -6,7 +6,6 @@ namespace SilgonGalaxy {
 
 	public sealed class CameraDolly : MonoBehaviour {
 		public Config config;
-		public GameConfig gameConfig;
 		
 		[SerializeField] private Transform target;
 		private Rigidbody2D targetRb;
@@ -18,7 +17,6 @@ namespace SilgonGalaxy {
 
 		public void Awake() {
 			SetTarget(target);
-			GameConfig.CheckAssigned(ref gameConfig, this);
 			truePosition = transform.position;
 			LookAhead();
 			offset = targetOffset;
@@ -30,7 +28,7 @@ namespace SilgonGalaxy {
 			PositionSnap();
 		}
 
-		void PositionSnap() => transform.position = truePosition.Quantize(gameConfig.pixelsPerUnit);
+		void PositionSnap() => transform.position = truePosition.Quantize(Bootstrappers.GameConfig.pixelsPerUnit);
 
 		void FollowTarget(float dt) {
 			if (target == null) return;
@@ -42,7 +40,7 @@ namespace SilgonGalaxy {
 			
 			if (config.easing > 0) {
 				offset = SmoothApproach(offset, targetOffset, config.easing, dt);
-				truePosition = target.position + offset.Quantize(gameConfig.pixelsPerUnit);
+				truePosition = target.position + offset.Quantize(Bootstrappers.GameConfig.pixelsPerUnit);
 			}
 			else
 				truePosition = targetPosition;
@@ -52,7 +50,7 @@ namespace SilgonGalaxy {
 			if (targetRb != null) {
 				targetOffset = target.up * config.lookAhead + Vector3.back * config.distance;
 				targetOffset += (Vector3)(targetRb.velocity * config.velocityTracking);
-				targetOffset = targetOffset.Quantize(gameConfig.pixelsPerUnit);
+				targetOffset = targetOffset.Quantize(Bootstrappers.GameConfig.pixelsPerUnit);
 			}
 			else
 				targetOffset = Vector3.zero;

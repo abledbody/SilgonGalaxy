@@ -3,10 +3,14 @@ using UnityEngine;
 namespace SilgonGalaxy.Weapons {
 	using Utils;
 
-	[System.Serializable]
-	public sealed class ChargeBlaster {
+	[RequireComponent(typeof(AudioSource))]
+	public sealed class ChargeBlaster : MonoBehaviour, IStartStopWeapon {
+		private const string PREFAB_NAME = "Charge Blaster";
+
+		private AudioSource audioSource;
+		
 		public Config config;
-		public References references;
+		public References refs;
 
 		private Delay chargeDelay;
 		private bool isFiring;
@@ -14,26 +18,40 @@ namespace SilgonGalaxy.Weapons {
 		private Delay shotDelay;
 
 
-		public void Update(float dt, Rigidbody2D rb) {
-			chargeDelay.Update(dt);
+		public static ChargeBlaster Attach(Transform parent, Vector3 localPosition, float angle, Config config, References refs) {
+			if (Bootstrappers.WeaponCollection.TryFetch(PREFAB_NAME, out var weapon)) {
+				var instance = Instantiate(weapon, localPosition, Quaternion.Euler(0, 0, angle), parent).GetComponent<ChargeBlaster>();
+				(instance.config, instance.refs) = (config, refs);
+				return instance;
+			}
+			else
+				throw new System.Exception($"Weapon {PREFAB_NAME} not found");
+		}
+
+		public void Awake() {
+			audioSource = GetComponent<AudioSource>();
+		}
+
+		public void Update() {
+			chargeDelay.Update(Time.deltaTime);
 			
-			if (shotDelay.Update(dt) && isFiring) {
+			if (shotDelay.Update(Time.deltaTime) && isFiring) {
 				if (isShotBuffered) {
-					references.audioSource.PlayOneShot(config.smallShotSound);
-					SpawnProjectile(rb, config.smallProjectile);
+					audioSource.PlayOneShot(config.smallShotSound);
+					SpawnProjectile(refs.rb, config.smallProjectile);
 					chargeDelay.Start(config.chargeTime);
 					isShotBuffered = false;
 				}
 				else {
-					references.audioSource.PlayOneShot(config.initialChargeSound);
-					references.audioSource.clip = config.chargeLoopSound;
-					references.audioSource.loop = true;
-					references.audioSource.PlayScheduled(config.initialChargeSound.length + AudioSettings.dspTime);
+					audioSource.PlayOneShot(config.initialChargeSound);
+					audioSource.clip = config.chargeLoopSound;
+					audioSource.loop = true;
+					audioSource.PlayScheduled(config.initialChargeSound.length + AudioSettings.dspTime);
 				}
 			}
 		}
 
-		public void StartFire(Rigidbody2D rb) {
+		public void StartFire() {
 			isFiring = true;
 
 			if (!shotDelay.Complete) {
@@ -42,11 +60,11 @@ namespace SilgonGalaxy.Weapons {
 			}
 			chargeDelay.Start(config.chargeTime);
 			
-			references.audioSource.PlayOneShot(config.smallShotSound);
-			SpawnProjectile(rb, config.smallProjectile);
+			audioSource.PlayOneShot(config.smallShotSound);
+			SpawnProjectile(refs.rb, config.smallProjectile);
 		}
 		
-		public void ReleaseFire(Rigidbody2D rb) {
+		public void ReleaseFire() {
 			if (!isFiring) return;
 			isFiring = false;
 			
@@ -56,14 +74,14 @@ namespace SilgonGalaxy.Weapons {
 				chargeDelay.Complete
 				? (config.bigProjectile, config.bigShotSound)
 				: (config.smallProjectile, config.smallShotSound);
-			references.audioSource.Stop();
-			references.audioSource.PlayOneShot(clip);
-			SpawnProjectile(rb, prefab);
+			audioSource.Stop();
+			audioSource.PlayOneShot(clip);
+			SpawnProjectile(refs.rb, prefab);
 		}
 
 		private void SpawnProjectile(Rigidbody2D rb, Projectile prefab) {
 			shotDelay.Start(config.shotInterval);
-			Projectile projectile = Object.Instantiate(prefab, references.spawnPosition.position, references.spawnPosition.rotation);
+			Projectile projectile = Instantiate(prefab, transform.position, transform.rotation);
 			projectile.Init(rb);
 		}
 
@@ -84,8 +102,7 @@ namespace SilgonGalaxy.Weapons {
 
 		[System.Serializable]
 		public struct References {
-			public Transform spawnPosition;
-			public AudioSource audioSource;
+			public Rigidbody2D rb;
 		}
 	}
 }

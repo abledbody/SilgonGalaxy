@@ -4,14 +4,12 @@ namespace SilgonGalaxy {
 	using Extensions;
 
 	public sealed class PositionSnap : MonoBehaviour {
-		public GameConfig gameConfig;
 		public Vector3 offset;
 
 		private CameraDolly dolly;
 
 
 		public void Awake() {
-			GameConfig.CheckAssigned(ref gameConfig, this);
 			dolly = Camera.main.GetComponent<CameraDolly>();
 		}
 
@@ -20,7 +18,7 @@ namespace SilgonGalaxy {
 
 			var camOffset = dolly.TruePosition - dolly.transform.position;
 
-			transform.position = transform.parent.TransformPoint(offset).Quantize(gameConfig.pixelsPerUnit);
+			transform.position = transform.parent.TransformPoint(offset).Quantize(Bootstrappers.GameConfig.pixelsPerUnit);
 		}
 	}
 }

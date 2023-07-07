@@ -11,21 +11,17 @@ namespace SilgonGalaxy.Ships {
 
 		[SerializeField] internal Thrusters thrusters = new();
 		[SerializeField] internal Rotation rotation = new();
-
-		public ChargeBlaster chargeBlaster = new();
-		public PlasmaCutter plasmaCutter = new();
 		
 		[NonSerialized]public float hInput;
 		[NonSerialized]public float vInput;
 
+		public PlasmaCutter.Config plasmaCutterConfig;
+		private PlasmaCutter plasmaCutter;
+
 
 		public void Awake() {
 			rb = GetComponent<Rigidbody2D>();
-		}
-
-		public void Update() {
-			chargeBlaster.Update(Time.deltaTime, rb);
-			plasmaCutter.Update(Time.deltaTime);
+			plasmaCutter = PlasmaCutter.Attach(transform, Vector3.zero, 0, plasmaCutterConfig);
 		}
 
 		public void FixedUpdate() {

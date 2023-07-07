@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 6c481fc5abf92f34a929a442af1416b3
+  m_SerializeEntries:
+  - m_GUID: 7360004e29ced254cb5a22a29e705635
+    m_Address: Bootstrappers
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76cd9fad17c9e204ca55f66b0382a4f2
+    m_Address: Weapons/Plasma Cutter
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Weapon
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 34094744fc5ae81439f0f09108dc1279, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 547cd14f5155fed49a1ea741fcbc52b1, type: 2}
+    - {fileID: 11400000, guid: 494f0f1c758a09b44933b377608c728b, type: 2}
